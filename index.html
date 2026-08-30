@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Gentle Check-In</title>
+  <style>
+    /*  (Cozy & Soothing Vibe) */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fef6e4 0%, #f3d2c1 100%);
+      color: #001e1d;
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Container Card Style */
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      max-width: 420px;
+      width: 85%;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    h1 {
+      font-weight: 600;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      color: #004643;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #2e2e2e;
+      margin-bottom: 24px;
+    }
+
+    /* Text Input Box for Name */
+    .name-input {
+      width: 80%;
+      padding: 12px 18px;
+      border: 2px solid #f3d2c1;
+      border-radius: 20px;
+      font-size: 1rem;
+      text-align: center;
+      outline: none;
+      margin-bottom: 20px;
+      background-color: #ffffff;
+      color: #004643;
+      transition: border-color 0.3s ease;
+    }
+
+    .name-input:focus {
+      border-color: #abd1c6;
+    }
+
+    /* Custom Image Button Styling */
+    .custom-img-btn {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      outline: none;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .custom-img-btn img {
+      width: 140px;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .custom-img-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .custom-img-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Hidden Utility Class for Page Steps */
+    .hidden {
+      display: none;
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STEP 1: Warm Greeting -->
+  <div id="step-1" class="card">
+    <h1>Hey there, gwapo/gwapa. My name is Khal✨</h1>
+    <p>Here is a little quiet space just for you. Take a deep breath, take your time, and remember who you truly are!</p>
+    
+    <button class="custom-img-btn" onclick="nextStep(1, 2)">
+      <img src="button intro.png" alt="Start Check-In">
+    </button>
+  </div>
+
+  <!-- STEP 2: Explaining the Website -->
+  <div id="step-2" class="card hidden">
+    <h1>What is this place?</h1>
+    <p>Life gets busy, and sometimes we forget to pause. This is a simple, gentle check-in to see how you're feeling and give you a cozy moment to yourself. Life could be overwhelming, from academics to extra-curriculars, or even personal life, you deserve to relax and recognize how you feel.</p>
+    
+    <button class="custom-img-btn" onclick="nextStep(2, 3)">
+      <img src="button intro.png" alt="Continue">
+    </button>
+  </div>
+
+  <!-- STEP 3: Asking for their Name -->
+  <div id="step-3" class="card hidden">
+    <h1>Before everythung...</h1>
+    <p>What should I call you?</p>
+    
+    <!-- Text Box for entering name -->
+    <input type="text" id="user-name" class="name-input" placeholder="Enter your name..." autocomplete="off">
+    <br>
+    
+    <!-- Button calls saveName() function -->
+    <button class="custom-img-btn" onclick="saveName()">
+      <img src="button intro.png" alt="Save Name">
+    </button>
+  </div>
+
+  <!-- STEP 4: Personalized Greeting -->
+  <div id="step-4" class="card hidden">
+    <h1>Nice to meet you, <span id="display-name" style="color: #e16162;">friend</span>!</h1>
+    <p>Let's do a quick check-in. I'm going to ask a few questions about different areas of your life. Answer honestly using the reaction buttons below!</p>
+    
+    <button class="custom-img-btn" onclick="startQuestionnaire()">
+      <img src="button intro.png" alt="Begin Questions">
+    </button>
+  </div>
+
+  <!-- STEP 5: Interactive Questionnaire Card -->
+  <div id="step-5" class="card hidden">
+    <div id="progress" class="progress-text">Question 1 of 12</div>
+    <h1 id="question-text">Question text goes here...</h1>
+    
+    <!-- 5 Mood Buttons -->
+    <div class="mood-container">
+      <button class="mood-btn" onclick="recordAnswer('happy', 1)" title="Happy">
+        <img src="happybtn.png" alt="Happy">
+      </button>
+      
+      <button class="mood-btn" onclick="recordAnswer('ok', 2)" title="OK">
+        <img src="OKlangbtn.png" alt="OK">
+      </button>
+      
+      <button class="mood-btn" onclick="recordAnswer('shocked', 3)" title="Shocked">
+        <img src="shockedbtn.png" alt="Shocked">
+      </button>
+      
+      <button class="mood-btn" onclick="recordAnswer('stressed', 4)" title="Stressed">
+        <img src="stressedbtn.png" alt="Stressed">
+      </button>
+      
+      <button class="mood-btn" onclick="recordAnswer('sad', 5)" title="Sad">
+        <img src="Sad pic.png" alt="Sad">
+      </button>
+    </div>
+  </div>
+
+  <!-- STEP 6: Results & Custom Suggestions Screen -->
+  <div id="step-6" class="card hidden">
+    <h1>Here's your check-in, <span class="user-name-ref">friend</span> 🌸</h1>
+    
+    <div id="result-badge" class="result-badge">Score: 0 / 60</div>
+    <p id="result-message">Loading message...</p>
+
+    <!-- Suggestions Box -->
+    <div class="suggestions-box">
+      <h3>Gentle suggestions for right now:</h3>
+      <ul id="suggestions-list">
+        <!-- Dynamic list items will appear here -->
+      </ul>
+    </div>
+
+  <script>
+    let userName = "friend";
+
+    const questionsList = [
+      { text: "How are you feeling about your current workload and assignments?", category: "Academics" },
+      { text: "How confident do you feel about your upcoming tests, projects, or grades?", category: "Academics" },
+      { text: "How manageable does your daily school schedule feel right now?", category: "Academics" },
+
+      { text: "How are you feeling about your commitments outside of school (clubs, sports, or hobbies)?", category: "Extracurriculars" },
+      { text: "Do you feel like you have enough energy for the extra activities you are involved in?", category: "Extracurriculars" },
+      { text: "How supported do you feel by the teams, clubs, or groups you participate in?", category: "Extracurriculars" },
+
+      { text: "How are things feeling in your relationships with family or close friends?", category: "Personal Life" },
+      { text: "How satisfied are you with the time you get to spend on yourself lately?", category: "Personal Life" },
+      { text: "How supported do you feel by the people closest to you right now?", category: "Personal Life" },
+
+      { text: "How well have you been sleeping and resting lately?", category: "General Life" },
+      { text: "How balanced does your overall day-to-day life feel right now?", category: "General Life" },
+      { text: "When you look at the week ahead, how is your overall mindset?", category: "General Life" }
+    ];
+
+    let randomizedQuestions = [];
+    let currentQuestionIndex = 0;
+    let userResponses = [];
+
+    function nextStep(current, next) {
+      document.getElementById(`step-${current}`).classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById(`step-${next}`).classList.remove('hidden');
+      }, 200);
+    }
+
+    function saveName() {
+      const enteredName = document.getElementById('user-name').value.trim();
+      if (enteredName !== "") {
+        userName = enteredName;
+      }
+      
+      document.getElementById('display-name').innerText = userName;
+      
+      const nameRefs = document.querySelectorAll('.user-name-ref');
+      nameRefs.forEach(el => el.innerText = userName);
+
+      nextStep(3, 4);
+    }
+
+    function shuffleArray(array) {
+      let shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function startQuestionnaire() {
+      randomizedQuestions = shuffleArray(questionsList);
+      currentQuestionIndex = 0;
+      userResponses = [];
+      showQuestion();
+      nextStep(4, 5);
+    }
+
+    function showQuestion() {
+      const q = randomizedQuestions[currentQuestionIndex];
+      document.getElementById('progress').innerText = `Question ${currentQuestionIndex + 1} of ${randomizedQuestions.length}`;
+      document.getElementById('question-text').innerText = q.text;
+    }
+
+    function recordAnswer(moodLabel, stressScore) {
+      const currentQuestion = randomizedQuestions[currentQuestionIndex];
+
+      userResponses.push({
+        questionNumber: currentQuestionIndex + 1,
+        questionText: currentQuestion.text,
+        category: currentQuestion.category,
+        reaction: moodLabel,
+        score: stressScore
+      });
+
+      currentQuestionIndex++;
+
+      if (currentQuestionIndex < randomizedQuestions.length) {
+        showQuestion();
+      } else {
+        calculateAndDisplayResults();
+        nextStep(5, 6);
+      }
+    }
+
+    // Dynamic Range & Suggestions Logic
+    function calculateAndDisplayResults() {
+      // 1. Calculate Total Score
+      const totalScore = userResponses.reduce((sum, item) => sum + item.score, 0);
+
+      // 2. Calculate Category Breakdown to find highest stressor
+      const categories = { "Academics": 0, "Extracurriculars": 0, "Personal Life": 0, "General Life": 0 };
+      userResponses.forEach(item => {
+        categories[item.category] += item.score;
+      });
+
+      let highestCategory = "Academics";
+      let highestCatScore = 0;
+      for (const cat in categories) {
+        if (categories[cat] > highestCatScore) {
+          highestCatScore = categories[cat];
+          highestCategory = cat;
+        }
+      }
+
+      // UI Elements
+      const badge = document.getElementById('result-badge');
+      const msg = document.getElementById('result-message');
+      const list = document.getElementById('suggestions-list');
+
+      let suggestionsHtml = "";
+
+      // 3. Match Range & Build Suggestions
+      if (totalScore >= 12 && totalScore <= 23) {
+        badge.innerText = `Feeling Calm & Peaceful 🌿 (${totalScore}/60)`;
+        msg.innerText = `You seem to be in a really steady and comfortable place right now. That's wonderful!`;
+        
+        suggestionsHtml = `
+          <li>Keep riding this good momentum! Do something you genuinely enjoy today.</li>
+          <li>Send a quick thank-you text to someone who made you smile recently.</li>
+          <li>Take a moment to write down 1 thing you are grateful for today.</li>
+        `;
+      } else if (totalScore >= 24 && totalScore <= 35) {
+        badge.innerText = `Mild Stress ☕ (${totalScore}/60)`;
+        msg.innerText = `You have a few things on your plate, but you're handling it well. Noticeably, ${highestCategory.toLowerCase()} is taking up some extra energy.`;
+        
+        suggestionsHtml = `
+          <li>Take a 10-minute break away from all screens with a hot drink or snack.</li>
+          <li>Write down the top 2 things you need to finish today, and leave the rest for tomorrow.</li>
+          <li>Get a quick stretch in to release any tension in your shoulders and neck.</li>
+        `;
+      } else if (totalScore >= 36 && totalScore <= 47) {
+        badge.innerText = `Moderate Stress 🌊 (${totalScore}/60)`;
+        msg.innerText = `Things are feeling a bit heavy right now—especially around ${highestCategory.toLowerCase()}. It's okay to slow down.`;
+        
+        suggestionsHtml = `
+          <li>Try 3 deep "box breaths": Inhale for 4s, hold for 4s, exhale for 4s, hold for 4s.</li>
+          <li>Pick <b>only one task</b> to focus on next. Ignore everything else for 30 minutes.</li>
+          <li>Step outside or open a window to get some fresh air.</li>
+        `;
+      } else { // 48 - 60
+        badge.innerText = `High Stress / Heavy Load ❤️ (${totalScore}/60)`;
+        msg.innerText = `You're carrying a lot right now, particularly with ${highestCategory.toLowerCase()}. Please remember to be extra gentle with yourself.`;
+        
+        suggestionsHtml = `
+          <li>Give yourself permission to pause work or studying for the rest of today if possible.</li>
+          <li>Drink a full glass of cool water and rest your eyes for 15 minutes.</li>
+          <li>Reach out to someone you trust—you don't have to carry everything alone.</li>
+          // Function to reset progress and start over
+    
+      
+        `;
+      }
+
+      list.innerHTML = suggestionsHtml;
+    }
+  </script>
+
+</body>
+</html>
